@@ -14,7 +14,7 @@ const config: Config = {
   			foreground: 'var(--foreground)',
   			customBlue: '#4D7EFF',
   			sidebar: {
-  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				DEFAULT: '#ffffff',
   				foreground: 'hsl(var(--sidebar-foreground))',
   				primary: 'hsl(var(--sidebar-primary))',
   				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',

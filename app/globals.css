@@ -35,3 +35,9 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
+
+.dashboard-title {
+  font-weight: 700;
+  color: #343C6A;
+  font-size: 28px;
+}

@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings,User } from "lucide-react";
+import { Calendar, Home, Inbox, Search, Settings, User } from "lucide-react";
 
 import {
   Sidebar,
@@ -11,7 +11,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
 
 // Menu items.
 const items = [
@@ -49,36 +48,37 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className={"flex flex-row items-center"}>
-          <Image
-            src="/assets/icons/iconLogo.png"
-            alt="Logo Icon"
-            width={10}
-            height={10}
-            className="object-contain h-10 w-10"
-            layout="fixed"
-          />
-          <h1 className={"px-2 font-black text-xl"}>Medical Clinic</h1>
-        </div>
-      </SidebarHeader>
+    <Sidebar >
       <SidebarContent>
+        <SidebarHeader>
+          <div className={"flex flex-row items-center ps-10"}>
+            <h1 className={"dashboard-title py-5"}>Medical Clinic</h1>
+          </div>
+        </SidebarHeader>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <div className="ps-10">
+              <SidebarMenu>
+                <div className="flex flex-col gap-5">
+                  {items.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <a
+                          href={item.url}
+                          className="text-gray-500 text-xl gap-5"
+                        >
+                          <div className="flex text-xl">
+                            <item.icon />
+                          </div>
+                          <span>{item.title}</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </div>
+              </SidebarMenu>
+            </div>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
