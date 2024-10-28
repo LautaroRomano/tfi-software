@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
+			titlePrimary: '#343C6A',
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
   			customBlue: '#4D7EFF',

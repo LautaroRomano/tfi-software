@@ -1,40 +1,62 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Patient } from "@/Models/dashboard/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { Edit, Eye, Trash } from "lucide-react";
 
 export const columns: ColumnDef<Patient>[] = [
   {
     accessorKey: "name",
-    header: "Nombre",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">Nombre</div>
+    ),
   },
   {
     accessorKey: "cuil",
-    header: "CUIL",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">CUIL</div>
+    ),
   },
   {
     accessorKey: "phone",
-    header: "Telefono",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">Telefono</div>
+    ),
   },
   {
     accessorKey: "birthDay",
-    header: "Fec Nacimiento",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">
+        Fec Nacimiento
+      </div>
+    ),
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">Email</div>
+    ),
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "actions",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">actions</div>
+    ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+      return (
+        <div className="flex gap-5">
+          <Button variant="ghost" size="icon">
+              <Eye />
+          </Button>
+          <Button variant="ghost" size="icon">
+            <Edit />
+          </Button>
+          <Button variant="ghost" size="icon">
+            <Trash />
+          </Button>
+        </div>
+      );
     },
   },
 ];
