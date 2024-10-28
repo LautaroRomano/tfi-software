@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <SidebarTrigger />
         </div>
         <Navbar />
-        <section className="w-full h-full p-0 relative bg-[#f5f7fa]">
+        <section className="w-full h-full p-0 bg-[#f5f7fa]">
           {children}
         </section>
       </main>
