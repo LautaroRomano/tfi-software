@@ -1,7 +1,13 @@
 import { Patient } from "@/Models/dashboard/types";
 
-export async function getPatients(): Promise<Patient[]> {
-  return testPatients;
+export async function getPatients(search: string): Promise<Patient[]> {
+  const res =
+    search.length > 0
+      ? testPatients.filter((data) =>
+          data.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+        )
+      : testPatients;
+  return res;
 }
 
 const testPatients = [
