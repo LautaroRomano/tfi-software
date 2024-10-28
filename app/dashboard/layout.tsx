@@ -6,8 +6,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full relative">
-        <div className="absolute top-0">
+      <main className="w-full">
+        <div className="fixed top-0  z-50">
           <SidebarTrigger />
         </div>
         <Navbar />

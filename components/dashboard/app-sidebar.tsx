@@ -1,5 +1,6 @@
+"use client";
 import { Calendar, Home, Inbox, Search, Settings, User } from "lucide-react";
-
+import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -47,8 +48,10 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
-    <Sidebar >
+    <Sidebar>
       <SidebarContent>
         <SidebarHeader>
           <div className={"flex flex-row items-center ps-10"}>
@@ -66,7 +69,11 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <a
                           href={item.url}
-                          className="text-gray-500 text-xl gap-5"
+                          className={`text-xl gap-5 ${
+                            pathname === item.url
+                              ? "text-blue-500"
+                              : "text-gray-500"
+                          }`}
                         >
                           <div className="flex text-xl">
                             <item.icon />
