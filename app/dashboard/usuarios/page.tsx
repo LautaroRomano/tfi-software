@@ -1,29 +1,31 @@
 "use client";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
-import { getPatients } from "./functions";
+import { getUsers } from "./functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { Patient } from "@/Models/dashboard/types";
-import CreateEntity from "@/app/dashboard/pacientes/create-entity";
+import { User } from "@/Models/dashboard/types";
+import CreateEntity from "@/app/dashboard/usuarios/create-entity";
 
-const createPatientData: Patient | null = {
+const createUserData: User | null = {
   id: "",
   name: "",
   email: "",
   phone: "",
   cuil: "",
   birthDay: "",
+  role: "",
+  password: "",
 };
 
 export default function Home() {
-  const [data, setData] = useState<Patient[]>([]);
+  const [data, setData] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [createPatient, setCreatePatient] = useState<Patient | null>(null);
+  const [createPatient, setCreatePatient] = useState<User | null>(null);
 
   const getData = async (search: string) => {
-    const res = await getPatients(search);
+    const res = await getUsers(search);
     setData(res);
   };
 
@@ -40,10 +42,10 @@ export default function Home() {
   };
 
   const handleChangeCreateEntity = () => {
-    setCreatePatient(createPatientData);
+    setCreatePatient(createUserData);
   };
 
-  const handleChangeData = (name: keyof Patient, value: string) => {
+  const handleChangeData = (name: keyof User, value: string) => {
     setCreatePatient((prev) => (prev ? { ...prev, [name]: value } : null));
   };
 
@@ -53,20 +55,22 @@ export default function Home() {
         data={createPatient}
         close={() => setCreatePatient(null)}
         handleChangeData={handleChangeData}
-        save={(data: Patient) => console.log("crear paciente", data)}
+        save={(data: User) => console.log("crear usuario", data)}
         labels={{
           name: "Nombre Completo",
           email: "Correo Electrónico",
           phone: "Teléfono",
           cuil: "CUIL",
           birthDay: "Fecha de nacimiento",
+          role: "ROL",
+          password: "Contraseña",
         }}
       />
       <div className="container mx-auto px-10 py-4 w-full">
         <div className="flex items-center justify-end gap-4 mb-4">
           <div className="flex">
             <Input
-              placeholder="Buscar paciente..."
+              placeholder="Buscar usuario..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="flex-1"
@@ -80,7 +84,7 @@ export default function Home() {
             className="ml-4"
             onClick={handleChangeCreateEntity}
           >
-            Nuevo Paciente
+            Nuevo Usuario
           </Button>
         </div>
         <DataTable columns={columns} data={data} />
