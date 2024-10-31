@@ -1,12 +1,16 @@
 "use client";
-import { Calendar, Home, Inbox, Search, Settings, User } from "lucide-react";
+import {
+  Home,
+  Settings,
+  User,
+  Users,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -23,22 +27,12 @@ const items = [
   {
     title: "Pacientes",
     url: "/dashboard/pacientes",
+    icon: Users,
+  },
+  {
+    title: "Usuarios",
+    url: "/dashboard/usuarios",
     icon: User,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
   },
   {
     title: "Settings",

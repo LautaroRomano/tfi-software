@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Patient } from "@/Models/dashboard/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export const columns: ColumnDef<Patient>[] = [
   {
@@ -40,21 +39,21 @@ export const columns: ColumnDef<Patient>[] = [
     ),
   },
   {
+    accessorKey: "role",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">ROL</div>
+    ),
+  },
+  {
     accessorKey: "actions",
     header: () => (
       <div className="text-start text-titlePrimary font-bold">actions</div>
     ),
     cell: ({ row }) => {
-      const router = useRouter();
-      const patientId = row.original.id;
       return (
         <div className="flex gap-5">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => router.replace(`/dashboard/pacientes/${patientId}`)}
-          >
-            <Eye />
+          <Button variant="ghost" size="icon">
+              <Eye />
           </Button>
           <Button variant="ghost" size="icon">
             <Edit />

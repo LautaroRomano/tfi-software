@@ -1,10 +1,11 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function Navbar() {
+export default function Navbar({ title = "" }) {
   return (
-    <div className="flex w-full top-0 left-0 h-24 px-10 items-center justify-between">
+    <div className="flex w-full top-0 left-0 h-16 px-10 items-center justify-between">
       <div className="flex">
-        <h1 className="dashboard-title">Pacientes</h1>
+        <h1 className="dashboard-title">{title}</h1>
       </div>
       <div className="flex">
         <Avatar>
