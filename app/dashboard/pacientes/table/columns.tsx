@@ -1,36 +1,45 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Patient } from "@/Models/dashboard/types";
+import { PacienteModel } from "@/Models/dashboard/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export const columns: ColumnDef<Patient>[] = [
+export const columns: ColumnDef<PacienteModel>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "nombre",
     header: () => (
       <div className="text-start text-titlePrimary font-bold">Nombre</div>
     ),
   },
   {
-    accessorKey: "cuil",
+    accessorKey: "apellido",
     header: () => (
-      <div className="text-start text-titlePrimary font-bold">CUIL</div>
+      <div className="text-start text-titlePrimary font-bold">Apellido</div>
     ),
   },
   {
-    accessorKey: "phone",
+    accessorKey: "direccion",
     header: () => (
-      <div className="text-start text-titlePrimary font-bold">Telefono</div>
+      <div className="text-start text-titlePrimary font-bold">Dirección</div>
     ),
   },
   {
-    accessorKey: "birthDay",
+    accessorKey: "dni",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">DNI</div>
+    ),
+  },
+  {
+    accessorKey: "fechaNacimiento",
     header: () => (
       <div className="text-start text-titlePrimary font-bold">
-        Fec Nacimiento
+        Fecha de Nacimiento
       </div>
+    ),
+    cell: ({ row }) => (
+      <div>{row.original.fechaNacimiento.toLocaleDateString()}</div>
     ),
   },
   {
@@ -40,13 +49,19 @@ export const columns: ColumnDef<Patient>[] = [
     ),
   },
   {
+    accessorKey: "telefono",
+    header: () => (
+      <div className="text-start text-titlePrimary font-bold">Telefono</div>
+    ),
+  },
+  {
     accessorKey: "actions",
     header: () => (
-      <div className="text-start text-titlePrimary font-bold">actions</div>
+      <div className="text-start text-titlePrimary font-bold">Acciones</div>
     ),
     cell: ({ row }) => {
       const router = useRouter();
-      const patientId = row.original.id;
+      const patientId = row.original.id_paciente;
       return (
         <div className="flex gap-5">
           <Button
@@ -56,10 +71,10 @@ export const columns: ColumnDef<Patient>[] = [
           >
             <Eye />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" onClick={() => router.replace(`/dashboard/pacientes?edit=${patientId}`)}>
             <Edit />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" onClick={() => router.replace(`/dashboard/pacientes?delete=${patientId}`)}>
             <Trash />
           </Button>
         </div>
