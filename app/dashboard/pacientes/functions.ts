@@ -35,12 +35,74 @@ const testPatients = [
       diagnosticos: [
         {
           id: 1,
-          fecha: new Date("25-04-2002"),
-          descripcion: "bla bla bla bla bla",
+          fecha: new Date("2021-04-2"),
+          descripcion: "Dengue",
           evoluciones: [
             {
               id_evolucion: 1,
-              fecha: new Date("26-04-2002"),
+              fecha: new Date("2021-04-15"),
+              informe: "Ejemplo de informe de la evolucion",
+              medico: {
+                nombre: "Homero",
+                apellido: "Simson",
+                dni: "7897897",
+                fechaNacimiento: new Date("01-11-2024"),
+                email: "homero@gmail.com",
+                telefono: 3865456789,
+                direccion: "Av. siempreviva",
+                matricula: "123456789",
+                especialidad: "Endocrologo",
+              },
+            },
+            {
+              id_evolucion: 2,
+              fecha: new Date("2021-04-15"),
+              informe: "Ejemplo de informe de la evolucion",
+              medico: {
+                nombre: "Homero",
+                apellido: "Simson",
+                dni: "7897897",
+                fechaNacimiento: new Date("01-11-2024"),
+                email: "homero@gmail.com",
+                telefono: 3865456789,
+                direccion: "Av. siempreviva",
+                matricula: "123456789",
+                especialidad: "Endocrologo",
+              },
+            },
+          ],
+        },
+        {
+          id: 2,
+          fecha: new Date("2021-04-2"),
+          descripcion: "Viruela del macaco",
+          evoluciones: [
+            {
+              id_evolucion: 1,
+              fecha: new Date("2021-04-15"),
+              informe: "destalle de la evolucion",
+              medico: {
+                nombre: "Homero",
+                apellido: "Simson",
+                dni: "7897897",
+                fechaNacimiento: new Date("01-11-2024"),
+                email: "homero@gmail.com",
+                telefono: 3865456789,
+                direccion: "Av. siempreviva",
+                matricula: "123456789",
+                especialidad: "Endocrologo",
+              },
+            },
+          ],
+        },
+        {
+          id: 1,
+          fecha: new Date("2021-04-2"),
+          descripcion: "Sida",
+          evoluciones: [
+            {
+              id_evolucion: 1,
+              fecha: new Date("2021-04-15"),
               informe: "destalle de la evolucion",
               medico: {
                 nombre: "Homero",
