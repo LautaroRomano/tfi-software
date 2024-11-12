@@ -10,6 +10,11 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
   return res;
 }
 
+export async function getPatient(id: number): Promise<PacienteModel> {
+  const res = testPatients.filter((data) => data.id_paciente === id)[0];
+  return res;
+}
+
 const historiaClinica: HistoriaClinicaModel = {
   id_historia_clinica: 0,
   diagnosticos: [],
@@ -25,7 +30,34 @@ const testPatients = [
     dni: "43789912",
     fechaNacimiento: new Date(),
     telefono: 381456789,
-    historiaClinica: historiaClinica,
+    historiaClinica: {
+      id_historia_clinica: 1,
+      diagnosticos: [
+        {
+          id: 1,
+          fecha: new Date("25-04-2002"),
+          descripcion: "bla bla bla bla bla",
+          evoluciones: [
+            {
+              id_evolucion: 1,
+              fecha: new Date("26-04-2002"),
+              informe: "destalle de la evolucion",
+              medico: {
+                nombre: "Homero",
+                apellido: "Simson",
+                dni: "7897897",
+                fechaNacimiento: new Date("01-11-2024"),
+                email: "homero@gmail.com",
+                telefono: 3865456789,
+                direccion: "Av. siempreviva",
+                matricula: "123456789",
+                especialidad: "Endocrologo",
+              },
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     id_paciente: 2,

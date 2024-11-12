@@ -59,7 +59,7 @@ export interface MedicamentoModel {
 }
 
 export interface MedicoModel extends PersonaModel {
-  id_medico?: number; // Opcional, se genera automáticamente en el backend
+  id_medico?: number;
   matricula: string;
   especialidad: string;
 }
