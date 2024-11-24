@@ -7,5 +7,5 @@ export default async function Page({
 }) {
   const patientId = (await params).patientId;
 
-  return <PatientPage patientId={parseInt(patientId)} />;
+  return <PatientPage patientDni={patientId} />;
 }

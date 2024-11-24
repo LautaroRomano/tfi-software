@@ -19,19 +19,19 @@ export const columns: ColumnDef<PacienteModel>[] = [
       <div className="text-start text-titlePrimary font-bold">Apellido</div>
     ),
   },
-  {
+  /*  {
     accessorKey: "direccion",
     header: () => (
       <div className="text-start text-titlePrimary font-bold">Dirección</div>
     ),
-  },
+  }, */
   {
     accessorKey: "dni",
     header: () => (
       <div className="text-start text-titlePrimary font-bold">DNI</div>
     ),
   },
-  {
+  /* {
     accessorKey: "fechaNacimiento",
     header: () => (
       <div className="text-start text-titlePrimary font-bold">
@@ -41,7 +41,7 @@ export const columns: ColumnDef<PacienteModel>[] = [
     cell: ({ row }) => (
       <div>{row.original.fechaNacimiento.toLocaleDateString()}</div>
     ),
-  },
+  }, */
   {
     accessorKey: "email",
     header: () => (
@@ -61,20 +61,32 @@ export const columns: ColumnDef<PacienteModel>[] = [
     ),
     cell: ({ row }) => {
       const router = useRouter();
-      const patientId = row.original.id_paciente;
+      const patientDni = row.original.dni;
       return (
         <div className="flex gap-5">
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => router.replace(`/dashboard/pacientes/${patientId}`)}
+            onClick={() => router.replace(`/dashboard/pacientes/${patientDni}`)}
           >
             <Eye />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => router.replace(`/dashboard/pacientes?edit=${patientId}`)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+              router.replace(`/dashboard/pacientes?edit=${patientDni}`)
+            }
+          >
             <Edit />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => router.replace(`/dashboard/pacientes?delete=${patientId}`)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+              router.replace(`/dashboard/pacientes?delete=${patientDni}`)
+            }
+          >
             <Trash />
           </Button>
         </div>

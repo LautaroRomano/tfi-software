@@ -5,19 +5,19 @@ import { getPatient } from "../functions";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
-export default function PatientPage({ patientId }: { patientId: number }) {
+export default function PatientPage({ patientDni }: { patientDni: string }) {
   const [data, setData] = useState<PacienteModel | null>(null);
   const [viewDiagnostico, setViewDiagnostico] =
     useState<DiagnosticoModel | null>(null);
 
-  const getData = async (patientId: number) => {
-    const res = await getPatient(patientId);
+  const getData = async (patientDni: string) => {
+    const res = await getPatient(patientDni);
     setData(res);
   };
 
   useEffect(() => {
-    if (patientId) getData(patientId);
-  }, [patientId]);
+    if (patientDni) getData(patientDni);
+  }, [patientDni]);
 
   if (!data)
     return (
@@ -53,10 +53,10 @@ export default function PatientPage({ patientId }: { patientId: number }) {
           <p>
             <span className="font-semibold">Email:</span> {data.email}
           </p>
-          <p>
+         {/*  <p>
             <span className="font-semibold">Fecha de nacimiento:</span>{" "}
             {data.fechaNacimiento.toLocaleDateString()}
-          </p>
+          </p> */}
           <p>
             <span className="font-semibold">Telefono:</span> {data.telefono}
           </p>

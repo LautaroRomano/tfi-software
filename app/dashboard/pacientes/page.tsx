@@ -1,7 +1,7 @@
 "use client";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
-import { getPatients } from "./functions";
+import { addPatient, getPatients } from "./functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -85,13 +85,20 @@ export default function Home() {
     return;
   };
 
+  const handleAddPatient = async(data: PacienteModel)=>{
+    const res = await addPatient(data);
+    getPatients('');
+    setSearchTerm('');
+    setCreatePatient(null);
+  }
+
   return (
     <>
       <CreateEntity
         data={createPatient}
         close={() => setCreatePatient(null)}
         handleChangeData={handleChangeData}
-        save={(data: PacienteModel) => console.log("crear paciente", data)}
+        save={handleAddPatient}
       />
       <div className="container mx-auto px-10 py-4 w-full">
         <div className="flex items-center justify-end gap-4 mb-4">
