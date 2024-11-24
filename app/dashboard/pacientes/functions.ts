@@ -1,18 +1,39 @@
 import { HistoriaClinicaModel, PacienteModel } from "@/Models/dashboard/types";
+import axios from "axios";
+import { config } from "@/lib/utils";
 
 export async function getPatients(search: string): Promise<PacienteModel[]> {
-  const res =
-    search.length > 0
-      ? testPatients.filter((data) =>
-          data.nombre.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-        )
-      : testPatients;
-  return res;
+  try {
+    const { data: res } = await axios.get(`${config.HOST}/paciente`);
+    const { data } = res;
+
+    const pacientes = data.filter(
+      (p: PacienteModel) =>
+        search.length === 0 ||
+        p.apellido.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+        p.nombre.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+        p.dni.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    );
+
+    return pacientes;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return Promise.resolve([]);
+  }
 }
 
-export async function getPatient(id: number): Promise<PacienteModel> {
-  const res = testPatients.filter((data) => data.id_paciente === id)[0];
-  return res;
+export async function getPatient(dni: string): Promise<PacienteModel | null> {
+  try {
+    const { data: res } = await axios.get(`${config.HOST}/paciente`);
+    const { data } = res;
+
+    const paciente = data.filter((p: PacienteModel) => p.dni === dni)[0];
+
+    return paciente;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return null;
+  }
 }
 
 const historiaClinica: HistoriaClinicaModel = {
