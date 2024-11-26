@@ -72,7 +72,7 @@ export const columns: ColumnDef<PacienteModel>[] = [
             <Eye />
           </Button>
           <Button
-            disabled
+            //disabled
             variant="ghost"
             size="icon"
             onClick={() =>

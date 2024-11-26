@@ -1,13 +1,18 @@
 "use client";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
-import { addPatient, deletePatient, getPatients } from "./functions";
+import {
+  addPatient,
+  deletePatient,
+  editPatient,
+  getPatients,
+} from "./functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { HistoriaClinicaModel, PacienteModel } from "@/Models/dashboard/types";
 import CreateEntity from "@/app/dashboard/pacientes/create-entity";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const historiaClinica: HistoriaClinicaModel = {
   id_historia_clinica: 0,
@@ -36,6 +41,8 @@ export default function Home() {
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
   const deleteId = searchParams.get("delete");
+
+  const router = useRouter();
 
   const getData = async (search: string) => {
     const res = await getPatients(search);
@@ -94,17 +101,26 @@ export default function Home() {
   };
 
   const handleAddPatient = async (data: PacienteModel) => {
-    await addPatient(data);
+    if (editId) {
+      await editPatient(data);
+    } else {
+      await addPatient(data);
+    }
     getPatients("");
     setSearchTerm("");
     setCreatePatient(null);
+    router.replace("/dashboard/pacientes");
   };
 
   return (
     <>
       <CreateEntity
+        isEdit={!!editId}
         data={createPatient}
-        close={() => setCreatePatient(null)}
+        close={() => {
+          setCreatePatient(null);
+          router.replace("/dashboard/pacientes");
+        }}
         handleChangeData={handleChangeData}
         save={handleAddPatient}
       />

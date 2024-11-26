@@ -40,7 +40,16 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 export async function addPatient(paciente: PacienteModel): Promise<boolean> {
   try {
     const { data: res } = await axios.post(`${config.HOST}/paciente`, paciente);
-    console.log("🚀 ~ createPatient ~ res:", res);
+    return !!res;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return false;
+  }
+}
+
+export async function editPatient(paciente: PacienteModel): Promise<boolean> {
+  try {
+    const { data: res } = await axios.put(`${config.HOST}/paciente/${paciente.dni}`, paciente);
     return !!res;
   } catch (error) {
     console.log("🚀 ~ getPatients ~ error:", error);
