@@ -26,7 +26,7 @@ export default function CreateEntity({
     <div className="flex absolute top-0 left-0 w-screen h-screen justify-center items-center z-50 bg-[#0005]">
       <div className="flex flex-col gap-4 p-6 border border-gray-300 rounded-lg shadow-md bg-white max-w-4xl">
         <h2 className="font-semibold mb-4 dashboard-title">
-          {data?.id_paciente && data?.id_paciente > 0
+          {data?.dni && data.dni.length > 0
             ? "Actualizar datos"
             : "Crear Nuevo Paciente"}
         </h2>

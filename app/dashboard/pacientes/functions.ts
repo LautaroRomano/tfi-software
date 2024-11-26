@@ -46,3 +46,13 @@ export async function addPatient(paciente: PacienteModel): Promise<boolean> {
     return false;
   }
 }
+
+export async function deletePatient(paciente: PacienteModel): Promise<boolean> {
+  try {
+    const { data: res } = await axios.delete(`${config.HOST}/paciente/${paciente.dni}`);
+    return !!res;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return false;
+  }
+}
