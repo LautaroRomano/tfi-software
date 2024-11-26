@@ -1,7 +1,7 @@
 "use client";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
-import { addPatient, getPatients } from "./functions";
+import { addPatient, deletePatient, getPatients } from "./functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -48,17 +48,25 @@ export default function Home() {
 
   useEffect(() => {
     if (editId && editId.length > 0) {
-      const paciente = data.find((f) => f.id_paciente === parseInt(editId));
+      const paciente = data.find((f) => f.dni === editId);
       setCreatePatient(paciente || null);
     }
   }, [editId]);
 
+  const handleDeletePaciente = async (paciente: PacienteModel) => {
+    const res = await deletePatient(paciente);
+    if (res) alert("Eliminado con exito!");
+    getData("");
+  };
+
   useEffect(() => {
     if (deleteId && deleteId.length > 0) {
-      const paciente = data.find((f) => f.id_paciente === parseInt(deleteId));
+      const paciente = data.find((f) => f.dni === deleteId);
+      if (!paciente) return;
       const res = window.confirm("Esta seguro que desea eliminar el paciente?");
-      if (res) console.log("🚀 Eliminar paciente", paciente);
-      else console.log("🚀 Cancelar eliminacio (salvao)", paciente);
+      if (res) {
+        handleDeletePaciente(paciente);
+      }
     }
   }, [deleteId]);
 
@@ -85,12 +93,12 @@ export default function Home() {
     return;
   };
 
-  const handleAddPatient = async(data: PacienteModel)=>{
-    const res = await addPatient(data);
-    getPatients('');
-    setSearchTerm('');
+  const handleAddPatient = async (data: PacienteModel) => {
+    await addPatient(data);
+    getPatients("");
+    setSearchTerm("");
     setCreatePatient(null);
-  }
+  };
 
   return (
     <>
