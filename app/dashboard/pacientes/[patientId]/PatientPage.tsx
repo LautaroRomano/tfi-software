@@ -1,17 +1,20 @@
 "use client";
 import { DiagnosticoModel, PacienteModel } from "@/Models/dashboard/types";
 import { useEffect, useState } from "react";
-import { getPatient } from "../functions";
+import { eliminarDiagnostico, getPatient } from "../functions";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import CreateDiagnostico from "./create-diagnostico";
 import CreateEvolucion from "./create-evolucion";
+import { Pencil, Trash2, Eye } from "lucide-react";
 
 export default function PatientPage({ patientDni }: { patientDni: string }) {
   const [data, setData] = useState<PacienteModel | null>(null);
   const [viewDiagnostico, setViewDiagnostico] =
     useState<DiagnosticoModel | null>(null);
   const [newDiagnostico, setNewDiagnostico] = useState(false);
+  const [editDiagnostico, setEditDiagnostico] =
+    useState<DiagnosticoModel | null>(null);
 
   const getData = async (patientDni: string) => {
     const res = await getPatient(patientDni);
@@ -21,6 +24,14 @@ export default function PatientPage({ patientDni }: { patientDni: string }) {
   useEffect(() => {
     if (patientDni) getData(patientDni);
   }, [patientDni]);
+
+  const handleDeleteDiagnostico = async (diagnostico: DiagnosticoModel) => {
+    const res = confirm("Estas seguro que deseas eliminar este diagnostico?");
+    if (res) {
+      await eliminarDiagnostico(diagnostico.id_diagnostico, patientDni);
+      getData(patientDni);
+    }
+  };
 
   if (!data)
     return (
@@ -43,6 +54,7 @@ export default function PatientPage({ patientDni }: { patientDni: string }) {
       <CreateDiagnostico
         close={() => setNewDiagnostico(false)}
         dni={patientDni}
+        editDiagnostico={editDiagnostico}
         isOpen={newDiagnostico}
         reload={() => {
           getData(patientDni);
@@ -88,18 +100,40 @@ export default function PatientPage({ patientDni }: { patientDni: string }) {
         </div>
         <div className="space-y-4">
           {data.historiaClinica.diagnosticos.map((diagnostico, index) => (
-            <button
-              className="bg-gray-100 p-4 rounded-lg flex justify-between items-center w-full hover:bg-gray-200"
-              onClick={() => setViewDiagnostico(diagnostico)}
-            >
-              <div key={index} className="flex justify-between items-center">
-                <div className="flex gap-4">
-                  <p className="font-semibold">
-                    Diagnóstico: {diagnostico.descripcion}
-                  </p>
+            <div className="flex gap-2 items-center">
+              <button
+                className="bg-gray-100 p-4 rounded-lg flex justify-between items-center w-full hover:bg-gray-200"
+                onClick={() => setViewDiagnostico(diagnostico)}
+              >
+                <div
+                  key={index}
+                  className="flex justify-between items-center w-full"
+                >
+                  <div className="flex gap-4">
+                    <p className="font-semibold">
+                      Diagnóstico: {diagnostico.descripcion}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </button>
+              </button>
+              <Button onClick={() => setViewDiagnostico(diagnostico)}>
+                {" "}
+                <Eye />{" "}
+              </Button>
+              <Button
+                onClick={() => {
+                  setEditDiagnostico(diagnostico);
+                  setNewDiagnostico(true);
+                }}
+              >
+                {" "}
+                <Pencil />
+              </Button>
+              <Button onClick={() => handleDeleteDiagnostico(diagnostico)}>
+                {" "}
+                <Trash2 />
+              </Button>
+            </div>
           ))}
         </div>
       </div>

@@ -28,7 +28,7 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
     const { data } = res;
 
     const paciente = data.filter((p: PacienteModel) => p.dni === dni)[0];
-    console.log(paciente)
+    console.log(paciente);
 
     return paciente;
   } catch (error) {
@@ -68,6 +68,38 @@ export async function agregarDiagnostico(
     const { data: res } = await axios.post(
       `${config.HOST}/paciente/${dni}/diagnostico`,
       { descripcion }
+    );
+    return !!res;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return false;
+  }
+}
+
+export async function editarDiagnostico(
+  id_diagnostico: number,
+  dni: string,
+  descripcion: string
+): Promise<boolean> {
+  try {
+    const { data: res } = await axios.put(
+      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`,
+      { descripcion }
+    );
+    return !!res;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return false;
+  }
+}
+
+export async function eliminarDiagnostico(
+  id_diagnostico: number,
+  dni: string
+): Promise<boolean> {
+  try {
+    const { data: res } = await axios.delete(
+      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`
     );
     return !!res;
   } catch (error) {

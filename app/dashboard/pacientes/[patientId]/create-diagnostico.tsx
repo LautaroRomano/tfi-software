@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
-import { agregarDiagnostico } from "../functions";
+import { agregarDiagnostico, editarDiagnostico } from "../functions";
 
 interface PropsType {
   isOpen: boolean;
   dni: string;
+  editDiagnostico: DiagnosticoModel | null;
   reload: Function;
   close: () => void;
 }
@@ -21,6 +22,7 @@ const createDiagnosticoData: DiagnosticoModel | null = {
 export default function CreateDiagnostico({
   isOpen,
   dni,
+  editDiagnostico,
   reload,
   close,
 }: PropsType) {
@@ -29,13 +31,20 @@ export default function CreateDiagnostico({
   const handleSubmit = async () => {
     if (!data?.descripcion || data.descripcion.length === 0)
       return alert("Debes agregar una descipcion!");
-    await agregarDiagnostico(dni, data.descripcion);
+    if (editDiagnostico === null)
+      await agregarDiagnostico(dni, data.descripcion);
+    if (editDiagnostico !== null)
+      await editarDiagnostico(
+        editDiagnostico.id_diagnostico,
+        dni,
+        data.descripcion
+      );
     reload();
     close();
   };
 
   useEffect(() => {
-    if (isOpen) setData(createDiagnosticoData);
+    if (isOpen) setData(editDiagnostico || createDiagnosticoData);
   }, [isOpen]);
 
   const handleChangeData = (name: keyof DiagnosticoModel, value: string) => {
@@ -49,7 +58,9 @@ export default function CreateDiagnostico({
     <div className="flex absolute top-0 left-0 w-screen h-screen justify-center items-center z-50 bg-[#0005]">
       <div className="flex flex-col gap-4 p-6 border border-gray-300 rounded-lg shadow-md bg-white max-w-4xl">
         <h2 className="font-semibold mb-4 dashboard-title">
-          Crear Nuevo Diagnostico
+          {editDiagnostico === null
+            ? "Crear Nuevo Diagnostico"
+            : "Editar Diagnostico"}
         </h2>
         <div className="grid grid-cols-2 gap-8 m-2">
           <div className="">
