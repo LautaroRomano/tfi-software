@@ -19,7 +19,7 @@ export interface HistoriaClinicaModel {
 }
 
 export interface DiagnosticoModel {
-  id: number;
+  id_diagnostico: number;
   descripcion: string;
   evoluciones: EvolucionModel[];
 }
