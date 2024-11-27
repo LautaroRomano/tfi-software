@@ -2,9 +2,20 @@ import { HistoriaClinicaModel, PacienteModel } from "@/Models/dashboard/types";
 import axios from "axios";
 import { config } from "@/lib/utils";
 
+const headers ={
+  'ngrok-skip-browser-warning': 'true',
+  'Content-Type': 'application/json',
+}
+const axiosInstance = axios.create({headers:headers})
+
+
+
 export async function getPatients(search: string): Promise<PacienteModel[]> {
   try {
-    const { data: res } = await axios.get(`${config.HOST}/paciente`);
+    const { data: res } = await axiosInstance.get(`${config.HOST}/paciente`,
+        {
+          headers: headers
+        });
     const { data } = res;
 
     const pacientes = data.filter(
@@ -24,11 +35,12 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
 
 export async function getPatient(dni: string): Promise<PacienteModel | null> {
   try {
-    const { data: res } = await axios.get(`${config.HOST}/paciente`);
+    const { data: res } = await axiosInstance.get(`${config.HOST}/paciente`,{headers:headers});
+
     const { data } = res;
 
     const paciente = data.filter((p: PacienteModel) => p.dni === dni)[0];
-    console.log(paciente)
+    console.log("EL paciente tiene lo siguiente",paciente)
 
     return paciente;
   } catch (error) {
@@ -39,7 +51,7 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 
 export async function addPatient(paciente: PacienteModel): Promise<boolean> {
   try {
-    const { data: res } = await axios.post(`${config.HOST}/paciente`, paciente);
+    const { data: res } = await axiosInstance.post(`${config.HOST}/paciente`, paciente);
     console.log("🚀 ~ createPatient ~ res:", res);
     return !!res;
   } catch (error) {
@@ -77,14 +89,16 @@ export async function agregarDiagnostico(
 }
 
 export async function agregarEvolucion(
-  dni: string,
-  id_diagnostico: number,
-  informe: string
+    dni: string,
+    id_diagnostico: number,
+    informe: any
 ): Promise<boolean> {
   try {
-    const { data: res } = await axios.post(
-      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
-      { informe }
+    const body = JSON.stringify(informe);
+    console.log("🚀 ~ agregarEvolucion ~ body", body);
+    const { data: res } = await axiosInstance.post(
+        `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
+        body
     );
     return !!res;
   } catch (error) {
@@ -92,3 +106,16 @@ export async function agregarEvolucion(
     return false;
   }
 }
+
+export const getAllMedications = async (pagina: number = 1, limite: number = 10) => {
+  try {
+    const response = await axios.get(`${config.NEW_HOST}/api/servicio-salud/medicamentos/todos`, {
+      params: { pagina, limite },
+    });
+    console.log("🚀 ~ response:", response);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los medicamentos:", error);
+    return [];
+  }
+};
