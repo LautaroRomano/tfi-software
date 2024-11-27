@@ -6,5 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const config = {
-  HOST:'http://localhost:8080'
+  HOST:'https://821e-2803-9800-9440-a90a-b0da-acbb-2f75-17b3.ngrok-free.app',
+  NEW_HOST: 'https://istp1service.azurewebsites.net'
 }
