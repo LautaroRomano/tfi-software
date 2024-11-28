@@ -129,7 +129,6 @@ export default function CreateEntity({
               Telefono
             </Label>
             <Input
-              type="number"
               className="bg-gray-200"
               id="telefono"
               name="telefono"

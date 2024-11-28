@@ -1,4 +1,4 @@
-import { HistoriaClinicaModel, PacienteModel } from "@/Models/dashboard/types";
+import { PacienteModel } from "@/Models/dashboard/types";
 import axios from "axios";
 import { config } from "@/lib/utils";
 

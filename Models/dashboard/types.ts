@@ -4,7 +4,7 @@ export interface PersonaModel {
   dni: string;
   fechaNacimiento: Date;
   email: string;
-  telefono: number;
+  telefono: string;
   direccion: string;
 }
 
