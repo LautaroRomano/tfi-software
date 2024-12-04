@@ -40,6 +40,7 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
     const { data } = res;
 
     const paciente = data.filter((p: PacienteModel) => p.dni === dni)[0];
+
     console.log("EL paciente tiene lo siguiente",paciente)
 
     return paciente;
@@ -51,8 +52,17 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 
 export async function addPatient(paciente: PacienteModel): Promise<boolean> {
   try {
-    const { data: res } = await axiosInstance.post(`${config.HOST}/paciente`, paciente);
-    console.log("🚀 ~ createPatient ~ res:", res);
+    const { data: res } = await axios.post(`${config.HOST}/paciente`, paciente);
+    return !!res;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return false;
+  }
+}
+
+export async function editPatient(paciente: PacienteModel): Promise<boolean> {
+  try {
+    const { data: res } = await axios.put(`${config.HOST}/paciente/${paciente.dni}`, paciente);
     return !!res;
   } catch (error) {
     console.log("🚀 ~ getPatients ~ error:", error);
@@ -80,6 +90,38 @@ export async function agregarDiagnostico(
     const { data: res } = await axios.post(
       `${config.HOST}/paciente/${dni}/diagnostico`,
       { descripcion }
+    );
+    return !!res;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return false;
+  }
+}
+
+export async function editarDiagnostico(
+  id_diagnostico: number,
+  dni: string,
+  descripcion: string
+): Promise<boolean> {
+  try {
+    const { data: res } = await axios.put(
+      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`,
+      { descripcion }
+    );
+    return !!res;
+  } catch (error) {
+    console.log("🚀 ~ getPatients ~ error:", error);
+    return false;
+  }
+}
+
+export async function eliminarDiagnostico(
+  id_diagnostico: number,
+  dni: string
+): Promise<boolean> {
+  try {
+    const { data: res } = await axios.delete(
+      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`
     );
     return !!res;
   } catch (error) {

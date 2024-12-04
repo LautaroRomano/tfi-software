@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 interface PropsType {
+  isEdit:boolean;
   data: null | PacienteModel;
   handleChangeData: (name: keyof PacienteModel, value: string) => void;
   save: (data: PacienteModel) => void;
@@ -11,6 +12,7 @@ interface PropsType {
 }
 
 export default function CreateEntity({
+  isEdit,
   data,
   handleChangeData,
   save,
@@ -26,7 +28,7 @@ export default function CreateEntity({
     <div className="flex absolute top-0 left-0 w-screen h-screen justify-center items-center z-50 bg-[#0005]">
       <div className="flex flex-col gap-4 p-6 border border-gray-300 rounded-lg shadow-md bg-white max-w-4xl">
         <h2 className="font-semibold mb-4 dashboard-title">
-          {data?.dni && data.dni.length > 0
+          {isEdit
             ? "Actualizar datos"
             : "Crear Nuevo Paciente"}
         </h2>
