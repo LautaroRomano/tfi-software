@@ -27,7 +27,7 @@ const createPatientData: PacienteModel | null = {
   dni: "",
   fechaNacimiento: new Date(),
   email: "",
-  telefono: 0,
+  telefono: "",
   historiaClinica: historiaClinica,
 };
 

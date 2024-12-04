@@ -4,7 +4,7 @@ export interface PersonaModel {
   dni: string;
   fechaNacimiento: Date;
   email: string;
-  telefono: number;
+  telefono: string;
   direccion: string;
 }
 
@@ -29,21 +29,22 @@ export interface EvolucionModel {
   fecha: Date;
   informe: string;
   medico: MedicoModel;
-  recetaDigital?: RecetaDigitalModel;
+  receta?: RecetaDigitalModel;
   pedidoLaboratorio?: PedidoLaboratorioModel;
 }
 
 export interface RecetaDigitalModel {
-    id_receta_digital: number;
     fecha: Date;
     descripcion: string;
-    recetaDigitaldetalle: RecetaDigitalDetalleModel[];
+    medicamentos: RecetaDigitalDetalleModel[];
   }
   
   export interface RecetaDigitalDetalleModel {
-    id_recetaDigital_detalle: number;
     medicamento: MedicamentoModel;
+    nombreComercial: string;
+    nombreGenerico: string;
     cantidad: number | null;
+    presentacion: string;
   }
   
   export interface PedidoLaboratorioModel {
@@ -53,9 +54,15 @@ export interface RecetaDigitalModel {
 
 export interface MedicamentoModel {
   id_medicamento?: number;
-  nombreComercial: string;
-  nombreGenerico: string;
+  nombreComercial: string; //luego sacar
+  nombreGenerico: string; //luego scar
   presentacion: string;
+}
+
+export interface MedicamentModel{
+    code: string,
+    description: string,
+    format: string
 }
 
 export interface MedicoModel extends PersonaModel {

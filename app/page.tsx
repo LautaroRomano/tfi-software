@@ -6,6 +6,9 @@ import Image from "next/image";
 
 
 
+
+
+
 export default function Home() {
 
     const healthCareMembers: HealthcareMember[] = [{
@@ -17,6 +20,8 @@ export default function Home() {
         numberOfMembers: '+50',
         description: 'Clínicas Activas',
     }];
+
+
 
     return (
         <>
@@ -32,7 +37,6 @@ export default function Home() {
                     />
                     <h1 className={'px-2 font-bold text-4xl'}>Medical Clinic</h1>
                 </div>
-                <Button className={'bg-customBlue rounded-2xl text-white'}>Ingresar</Button>
             </header>
 
             <main className="flex flex-col  h-screen p-12 justify-around">
@@ -70,6 +74,7 @@ export default function Home() {
                         </div>
                     ))}
                 </div>
+
 
             </main>
 

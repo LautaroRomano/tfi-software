@@ -154,6 +154,7 @@ function ViewDiagnostico({
 }) {
   const [newEvolucion, setNewEvolucion] = useState(false);
 
+  console.log(diagnostico)
   return (
     <div className="flex flex-col items-center bg-gray-50 min-h-screen p-8 w-full">
       <CreateEvolucion
@@ -216,10 +217,34 @@ function ViewDiagnostico({
                     }
                   </p>
                 </div>
-                {/* <div className="flex gap-4 w-full">
-                  <p className="font-semibold">DNI del Medico:</p>
-                  <p className="">{evolucion.medico.dni}</p>
-                </div> */}
+
+                {evolucion.receta?.medicamentos && evolucion.receta.medicamentos.length > 0 && (
+                    <div className="flex flex-col gap-4 w-full mt-4">
+                      <p className="font-semibold">Medicamentos:</p>
+                      {evolucion.receta.medicamentos.map((medicamento, medIndex) => (
+                          <div key={medIndex} className="flex flex-col gap-4 w-full">
+                            <div className="flex gap-4 w-full">
+                              <p className="font-semibold">Nombre comercial:</p>
+                              <p>{medicamento.nombreComercial!}</p>
+                            </div>
+                            <div className="flex gap-4 w-full">
+                              <p className="font-semibold">Nombre genérico:</p>
+                              <p>Tafirol</p>
+                            </div>
+                            <div className="flex gap-4 w-full">
+                              <p className="font-semibold">Presentación:</p>
+                              <p>Pastilla</p>
+                            </div>
+                            <div className="flex gap-4 w-full">
+                              <p className="font-semibold">Cantidad:</p>
+                              <p>{medicamento.cantidad}</p>
+                            </div>
+                          </div>
+                      ))}
+                    </div>
+                )}
+
+
               </div>
             </button>
           ))}

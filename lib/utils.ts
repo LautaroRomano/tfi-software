@@ -6,5 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const config = {
-  HOST:'http://localhost:8080'
+  HOST:'https://backendsoft.lunahri.net.ar',
+  NEW_HOST: 'https://istp1service.azurewebsites.net'
 }
