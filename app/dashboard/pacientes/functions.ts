@@ -136,11 +136,9 @@ export async function agregarEvolucion(
     informe: any
 ): Promise<boolean> {
   try {
-    const body = JSON.stringify(informe);
-    console.log("🚀 ~ agregarEvolucion ~ body", body);
     const { data: res } = await axiosInstance.post(
         `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
-        body
+        informe
     );
     return !!res;
   } catch (error) {

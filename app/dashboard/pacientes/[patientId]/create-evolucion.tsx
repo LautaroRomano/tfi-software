@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {EvolucionModel, RecetaDigitalModel} from "@/Models/dashboard/types";
+import {EvolucionModel, MedicamentModel, RecetaDigitalModel} from "@/Models/dashboard/types";
 import {agregarEvolucion} from "@/app/dashboard/pacientes/functions";
 import {Label} from "@/components/ui/label";
 import {Button} from "@/components/ui/button";
@@ -28,7 +28,7 @@ const createEvolucionData: EvolucionModel | null = {
     especialidad: 'Pediatra',
     fechaNacimiento: new Date(),
     matricula: '999555444',
-    telefono: 123456,
+    telefono: "123456",
   },
 };
 
@@ -40,7 +40,7 @@ export default function CreateEvolucion({
                                           close,
                                         }: PropsType) {
   const [data, setData] = useState<EvolucionModel | null>(createEvolucionData);
-  const [medicamentos, setMedicamentos] = useState<{ medicamento: string; cantidad: number }[]>([]);
+  const [medicamentos, setMedicamentos] = useState<MedicamentModel[]>([]);
   const [medicamentoNuevo, setMedicamentoNuevo] = useState<string>('');
   const [cantidadNuevo, setCantidadNuevo] = useState<number>(1);
 
@@ -53,7 +53,7 @@ export default function CreateEvolucion({
   const handleChangeDescription = (name: keyof RecetaDigitalModel, value: string) => {
     setData((prev) => {
       if (prev) {
-        const recetaDigital = prev.receta || { fecha: new Date(), descripcion: '', medicamentos: [] };
+        const recetaDigital = prev.receta || { fecha: format(new Date(), 'yyyy-MM-dd HH:mm:ss'), descripcion: '', medicamentos: [] };
         return { ...prev, receta: { ...recetaDigital, [name]: value } };
       }
       return null;
@@ -65,7 +65,7 @@ export default function CreateEvolucion({
     if (medicamentoNuevo.trim() !== '') {
       setMedicamentos((prev) => [
         ...prev,
-        { medicamento: medicamentoNuevo, cantidad: cantidadNuevo },
+        { nombreComercial: medicamentoNuevo,nombreGenerico: medicamentoNuevo, cantidad: cantidadNuevo,presentacion:'Pastilla' },
       ]);
       setMedicamentoNuevo('');
       setCantidadNuevo(1);
@@ -81,21 +81,17 @@ export default function CreateEvolucion({
     if (!data?.informe || data.informe.length === 0) {
       return alert('Debes agregar una descripción!');
     }
+    
 
-    const evolucionData: any = {
+    const evolucionData: EvolucionModel = {
+      ...data,
       informe: data.informe,  // Suponiendo que 'data.informe' contiene la descripción
       receta: {
         fecha:  format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-        descripcion: 'Tomar ibuprofeno cada 6 horas',
-        medicamentos: medicamentos.map((medicamento) => ({
-          nombreComercial: medicamento.medicamento,
-          nombreGenerico: 'Ibuprofeno',
-          cantidad: medicamento.cantidad,
-          presentacion: 'pastilla',
-        })),
+        descripcion: data.receta?.descripcion || '',
+        medicamentos: medicamentos,
       },
     };
-
 
     const res = await agregarEvolucion(dni, id_diagnostico, evolucionData);
     console.log(res);
@@ -172,8 +168,9 @@ export default function CreateEvolucion({
                     placeholder="Cantidad"
                 />
                 <button
-                    className="bg-blue-500 text-white ml-2 px-4 py-2 rounded"
+                    className="bg-blue-500 text-white ml-2 px-4 py-2 rounded disabled:bg-gray-500"
                     onClick={handleAddMedication}
+                    disabled={medicamentos.length >=2}
                 >
                   Agregar
                 </button>
@@ -188,7 +185,7 @@ export default function CreateEvolucion({
                     {medicamentos.map((medicamento, index) => (
                         <li key={index} className="flex justify-between items-center">
                     <span>
-                      {medicamento.medicamento} - {medicamento.cantidad} unidades
+                      {medicamento.nombreComercial} - {medicamento.cantidad} unidades
                     </span>
                           <button
                               className="text-red-600"

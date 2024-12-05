@@ -26,43 +26,30 @@ export interface DiagnosticoModel {
 
 export interface EvolucionModel {
   id_evolucion: number;
-  fecha: Date;
+  fecha?: Date;
   informe: string;
-  medico: MedicoModel;
+  medico?: MedicoModel;
   receta?: RecetaDigitalModel;
   pedidoLaboratorio?: PedidoLaboratorioModel;
 }
 
 export interface RecetaDigitalModel {
-    fecha: Date;
-    descripcion: string;
-    medicamentos: RecetaDigitalDetalleModel[];
-  }
-  
-  export interface RecetaDigitalDetalleModel {
-    medicamento: MedicamentoModel;
-    nombreComercial: string;
-    nombreGenerico: string;
-    cantidad: number | null;
-    presentacion: string;
-  }
-  
-  export interface PedidoLaboratorioModel {
-    id_pedido_laboratorio: number;
-    descripcion: string;
-  }
+  fecha: string;
+  descripcion: string;
+  medicamentos: MedicamentModel[];
+}
 
-export interface MedicamentoModel {
+export interface PedidoLaboratorioModel {
+  id_pedido_laboratorio: number;
+  descripcion: string;
+}
+
+export interface MedicamentModel {
   id_medicamento?: number;
   nombreComercial: string; //luego sacar
   nombreGenerico: string; //luego scar
   presentacion: string;
-}
-
-export interface MedicamentModel{
-    code: string,
-    description: string,
-    format: string
+  cantidad: number;
 }
 
 export interface MedicoModel extends PersonaModel {
@@ -70,4 +57,3 @@ export interface MedicoModel extends PersonaModel {
   matricula: string;
   especialidad: string;
 }
-

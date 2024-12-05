@@ -239,6 +239,10 @@ function ViewDiagnostico({
                               <p className="font-semibold">Cantidad:</p>
                               <p>{medicamento.cantidad}</p>
                             </div>
+                            {
+                              evolucion.receta && medIndex !== evolucion.receta.medicamentos.length - 1 &&
+                              <div className="flex w-full h-px bg-gray-500"></div>
+                            }
                           </div>
                       ))}
                     </div>
