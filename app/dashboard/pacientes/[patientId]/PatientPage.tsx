@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import CreateDiagnostico from "./create-diagnostico";
 import CreateEvolucion from "./create-evolucion";
 import { Pencil, Trash2, Eye } from "lucide-react";
+import { set } from "date-fns";
 
 export default function PatientPage({ patientDni }: { patientDni: string }) {
   const [data, setData] = useState<PacienteModel | null>(null);
@@ -19,6 +20,7 @@ export default function PatientPage({ patientDni }: { patientDni: string }) {
   const getData = async (patientDni: string) => {
     const res = await getPatient(patientDni);
     setData(res);
+    if(!!viewDiagnostico) setViewDiagnostico(res?.historiaClinica.diagnosticos.find(d => d.id_diagnostico === viewDiagnostico.id_diagnostico) || null);
   };
 
   useEffect(() => {
@@ -154,7 +156,6 @@ function ViewDiagnostico({
 }) {
   const [newEvolucion, setNewEvolucion] = useState(false);
 
-  console.log(diagnostico)
   return (
     <div className="flex flex-col items-center bg-gray-50 min-h-screen p-8 w-full">
       <CreateEvolucion
@@ -162,7 +163,10 @@ function ViewDiagnostico({
         dni={patientDni}
         id_diagnostico={diagnostico.id_diagnostico}
         isOpen={newEvolucion}
-        reload={() => reload()}
+        reload={() => {
+          reload();
+          setNewEvolucion(false)
+        }}
       />
       <div className="w-full bg-white rounded-lg shadow-md p-6">
         <div className="flex gap-4 items-center mb-4">
@@ -245,6 +249,17 @@ function ViewDiagnostico({
                             }
                           </div>
                       ))}
+                    </div>
+                )}
+                {evolucion.pedidoLaboratorio?.descripcion && evolucion.pedidoLaboratorio.descripcion.length > 0 && (
+                    <div className="flex flex-col gap-4 w-full mt-4">
+                      <p className="font-semibold">Pedido de laboratorio:</p>
+                        <div className="flex flex-col gap-4 w-full">
+                          <div className="flex gap-4 w-full">
+                            <p className="font-semibold">Descripcion:</p>
+                            <p>{evolucion.pedidoLaboratorio.descripcion}</p>
+                          </div>
+                        </div>
                     </div>
                 )}
 

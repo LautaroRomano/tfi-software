@@ -40,7 +40,7 @@ export interface RecetaDigitalModel {
 }
 
 export interface PedidoLaboratorioModel {
-  id_pedido_laboratorio: number;
+  id_pedido_laboratorio?: number;
   descripcion: string;
 }
 
