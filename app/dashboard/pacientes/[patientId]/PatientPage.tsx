@@ -16,7 +16,6 @@ export default function PatientPage({ patientDni }: { patientDni: string }) {
   const [newDiagnostico, setNewDiagnostico] = useState(false);
   const [editDiagnostico, setEditDiagnostico] =
     useState<DiagnosticoModel | null>(null);
-
   const getData = async (patientDni: string) => {
     const res = await getPatient(patientDni);
     setData(res);
@@ -155,7 +154,6 @@ function ViewDiagnostico({
   reload: Function;
 }) {
   const [newEvolucion, setNewEvolucion] = useState(false);
-
   return (
     <div className="flex flex-col items-center bg-gray-50 min-h-screen p-8 w-full">
       <CreateEvolucion
@@ -233,11 +231,11 @@ function ViewDiagnostico({
                             </div>
                             <div className="flex gap-4 w-full">
                               <p className="font-semibold">Nombre genérico:</p>
-                              <p>Tafirol</p>
+                              <p>{medicamento.nombreGenerico!}</p>
                             </div>
                             <div className="flex gap-4 w-full">
                               <p className="font-semibold">Presentación:</p>
-                              <p>Pastilla</p>
+                              <p>{medicamento.presentacion!}</p>
                             </div>
                             <div className="flex gap-4 w-full">
                               <p className="font-semibold">Cantidad:</p>
