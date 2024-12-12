@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {EvolucionModel, MedicamentModel, PedidoLaboratorioModel, RecetaDigitalModel} from "@/Models/dashboard/types";
-import {agregarEvolucion} from "@/app/dashboard/pacientes/functions";
+import {agregarEvolucion, fetchMedicamentos, searchMedication} from "@/app/dashboard/pacientes/functions";
 import {Label} from "@/components/ui/label";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
@@ -47,10 +47,24 @@ export default function CreateEvolucion({
                                         }: PropsType) {
   const [data, setData] = useState<EvolucionModel | null>(createEvolucionData);
   const [medicamentos, setMedicamentos] = useState<MedicamentModel[]>([]);
-  const [medicamentoNuevo, setMedicamentoNuevo] = useState<string>('');
+  const [descMedicamentoNuevo, setDescMedicamentoNuevo] = useState<string>('');
+  const [medicamentoNuevo, setMedicamentoNuevo] = useState<{codigo: number,descripcion: string,formato: string,cantidad:number|null}|null>(null);
   const [cantidadNuevo, setCantidadNuevo] = useState<number>(1);
   const [pedidoLaboratorio, setPedidoLaboratorio] = useState<PedidoLaboratorioModel>({descripcion: ''});
   const [selectedTab, setSelectedTab] = useState<string>('none');
+  const [listFetchMedicamentos,setListFetchMedicamentos] = useState<{codigo: number,descripcion: string,formato: string}[]>([]);
+
+  useEffect(() => {
+    const getMedicamentos = async () => {
+      const medicamentos = await searchMedication(descMedicamentoNuevo);
+      setListFetchMedicamentos(medicamentos);
+    }
+    if (descMedicamentoNuevo.length > 2) getMedicamentos();
+    else {
+      setListFetchMedicamentos([]);
+      setMedicamentoNuevo(null);
+    }
+  }, [descMedicamentoNuevo]);
 
   const handleChangeData = (name: keyof EvolucionModel, value: string) => {
     setData((prev) => (prev ? { ...prev, [name]: value } : null));
@@ -69,14 +83,16 @@ export default function CreateEvolucion({
 
 
   const handleAddMedication = () => {
-    if (medicamentoNuevo.trim() !== '') {
-      setMedicamentos((prev) => [
-        ...prev,
-        { nombreComercial: medicamentoNuevo,nombreGenerico: medicamentoNuevo, cantidad: cantidadNuevo,presentacion:'Pastilla' },
-      ]);
-      setMedicamentoNuevo('');
-      setCantidadNuevo(1);
-    }
+    if(!medicamentoNuevo) return alert('Debe seleccionar un medicamento');
+    if(cantidadNuevo <= 0) return alert('La cantidad debe ser mayor a 0');
+    setListFetchMedicamentos([]);
+    setMedicamentoNuevo(null);
+    setMedicamentos((prev) => [
+      ...prev,
+      { nombreComercial: medicamentoNuevo.descripcion,nombreGenerico: medicamentoNuevo.descripcion, cantidad: cantidadNuevo,presentacion:medicamentoNuevo.formato },
+    ]);
+    setDescMedicamentoNuevo('');
+    setCantidadNuevo(1);
   };
 
   const handleRemoveMedication = (index: number) => {
@@ -136,7 +152,7 @@ export default function CreateEvolucion({
   if (!isOpen) return null;
 
   return (
-      <div className="flex absolute top-0 left-0 w-screen h-screen justify-center items-center z-50 bg-[#0005]">
+      <div className="flex fixed top-0 left-0 w-screen h-screen justify-center items-center z-50 bg-[#0005]">
         <div className="flex flex-col gap-4 p-6 border border-gray-300 rounded-lg shadow-md bg-white max-w-4xl">
           <h2 className="font-semibold mb-4 dashboard-title">Crear Nueva Evolución</h2>
           <div className="flex gap-8 m-2">
@@ -185,18 +201,34 @@ export default function CreateEvolucion({
                   </div>
                   {/* Campo para ingresar un medicamento nuevo */}
                   <div className="mt-4">
-                    <Label htmlFor="medicamentoNuevo" className="font-semibold text-md">
+                    <Label htmlFor="descMedicamentoNuevo" className="font-semibold text-md">
                       Medicamento
                     </Label>
-                    <div className="flex items-center">
+                    <div className="flex items-center relative">
                       <Input
                           className="bg-gray-200 flex-1"
-                          id="medicamentoNuevo"
-                          name="medicamentoNuevo"
-                          value={medicamentoNuevo}
-                          onChange={({ target }) => setMedicamentoNuevo(target.value)}
+                          id="descMedicamentoNuevo"
+                          name="descMedicamentoNuevo"
+                          value={descMedicamentoNuevo}
+                          onChange={({ target }) => setDescMedicamentoNuevo(target.value)}
                           placeholder="Ingrese el nombre del medicamento"
                       />
+                      <div className="flex flex-col absolute top-12 left-0 gap-2 h-auto max-h-52 overflow-y-auto">
+                        {!medicamentoNuevo && listFetchMedicamentos.map((medicamento, index) => (
+                            <Button
+                                key={index}
+                                className="px-4 py-2 rounded text-sm"
+                                onClick={() => {
+                                  setMedicamentoNuevo({...medicamento,cantidad:0});
+                                  setDescMedicamentoNuevo(`${medicamento.descripcion}`);
+                                }}
+                            >
+                              <p className='text-start w-full'>
+                              {medicamento.codigo} - {medicamento.descripcion} - {medicamento.formato}
+                              </p>
+                            </Button>
+                        ))}
+                      </div>
                       <Input
                           className="bg-gray-200 flex-1 ml-2"
                           id="cantidadNuevo"
