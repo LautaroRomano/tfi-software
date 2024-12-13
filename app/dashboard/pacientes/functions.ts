@@ -9,11 +9,11 @@ const headers = {
   Authorization: `Bearer ${token}`,
 };
 
-const axiosInstance = axios.create({ headers: headers, withCredentials: true, });
+const axiosInstance = axios.create({ headers: headers,baseURL: `${config.HOST}` });
 
 export const authenticUser = async (email: string, password: string) => {
   try {
-    const {data:response} = await axiosInstance.post(`/backend/auth/login`, {
+    const {data:response} = await axiosInstance.post(`/auth/login`, {
       email: email,
       password: password,
     });
@@ -22,7 +22,7 @@ export const authenticUser = async (email: string, password: string) => {
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       // Return the status code if it's an Axios error and response exists
-      return { status: error.response.status, message: error.response.data };
+      return { status: error.response.status, message: error.response.data,success:false };
     } else {
       console.error("Unexpected error during authentication:", error);
       return { status: 500, message: "Internal Server Error",success:false };
@@ -41,7 +41,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
       return [];
     }
 
-    const { data: res } = await axiosInstance.get(`/backend/paciente`, {
+    const { data: res } = await axiosInstance.get(`/paciente`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -68,7 +68,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
 
 export async function getPatient(dni: string): Promise<PacienteModel | null> {
   try {
-    const { data: res } = await axiosInstance.get(`/backend/paciente`, {
+    const { data: res } = await axiosInstance.get(`/paciente`, {
       headers: headers,
     });
 
@@ -87,7 +87,7 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 
 export async function addPatient(paciente: PacienteModel): Promise<boolean> {
   try {
-    const { data: res } = await axiosInstance.post(`/backend/paciente`, paciente);
+    const { data: res } = await axiosInstance.post(`/paciente`, paciente);
     return !!res;
   } catch (error) {
     console.error("Error al agregar paciente:", error);
@@ -98,7 +98,7 @@ export async function addPatient(paciente: PacienteModel): Promise<boolean> {
 export async function editPatient(paciente: PacienteModel): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.put(
-      `/backend/paciente/${paciente.dni}`,
+      `/paciente/${paciente.dni}`,
       paciente
     );
     return !!res;
@@ -111,7 +111,7 @@ export async function editPatient(paciente: PacienteModel): Promise<boolean> {
 export async function deletePatient(paciente: PacienteModel): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.delete(
-      `/backend/paciente/${paciente.dni}`
+      `/paciente/${paciente.dni}`
     );
     return !!res;
   } catch (error) {
@@ -126,7 +126,7 @@ export async function agregarDiagnostico(
 ): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.post(
-      `/backend/paciente/${dni}/diagnostico`,
+      `/paciente/${dni}/diagnostico`,
       { descripcion }
     );
     return !!res;
@@ -143,7 +143,7 @@ export async function editarDiagnostico(
 ): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.put(
-      `/backend/paciente/${dni}/diagnostico/${id_diagnostico}`,
+      `/paciente/${dni}/diagnostico/${id_diagnostico}`,
       { descripcion }
     );
     return !!res;
@@ -159,7 +159,7 @@ export async function eliminarDiagnostico(
 ): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.delete(
-      `/backend/paciente/${dni}/diagnostico/${id_diagnostico}`
+      `/paciente/${dni}/diagnostico/${id_diagnostico}`
     );
     return !!res;
   } catch (error) {
@@ -175,7 +175,7 @@ export async function agregarEvolucion(
 ): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.post(
-      `/backend/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
+      `/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
       informe
     );
     return !!res;
@@ -205,8 +205,8 @@ export const getAllMedications = async (
 
 export const searchMedication = async (query: string) => {
   try {
-    const response = await axiosInstance.get(
-      `/api/servicio-salud/medicamentos`,
+    const response = await axios.get(
+      `${config.NEW_HOST}/api/servicio-salud/medicamentos`,
       {
         params: { descripcion: query },
       }
