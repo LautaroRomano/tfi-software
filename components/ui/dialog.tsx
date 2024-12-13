@@ -69,15 +69,14 @@ export const Dialog = ({ router }: DialogProps) => {
         try {
             const result = await authenticUser(data.email, data.password);
 
-            if (result) {
-                console.log("la data es: ", result);
+            console.log("🚀 ~ onSubmit ~ result:", result)
+            if (result.success) {
                 // guaradar en base de datos el token
-                storeToken(result.token).then(() => {
+                storeToken(result.token,result.user).then(() => {
                     router.push("/dashboard");
                 })
             } else {
                 // Handle login failure
-                console.log("Login failed with status:", result.status, "Message:", result.message);
                 setError("Login failed. Please check your credentials."); // Establece el error
                 setTimeout(() => {
                     setError(null); // Desaparece el alert después de 5 segundos
