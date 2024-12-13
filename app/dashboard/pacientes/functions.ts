@@ -1,19 +1,54 @@
+import { config, getToken } from "@/lib/utils";
 import { PacienteModel } from "@/Models/dashboard/types";
 import axios from "axios";
-import { config } from "@/lib/utils";
 
 const headers = {
   "ngrok-skip-browser-warning": "true",
   "Content-Type": "application/json",
   "strict-origin-when-cross-origin": "true",
 };
-const axiosInstance = axios.create({ headers: headers });
+
+
+
+const axiosInstance = axios.create({ headers: headers, withCredentials: true, });
+
+export const authenticUser = async (email: string, password: string) => {
+  try {
+    const response = await axiosInstance.post(`${config.HOST}/auth/login`, {
+      email: email,
+      password: password,
+    });
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      // Return the status code if it's an Axios error and response exists
+      return { status: error.response.status, message: error.response.data };
+    } else {
+      console.error("Unexpected error during authentication:", error);
+      return { status: 500, message: "Internal Server Error" };
+    }
+  }
+}
+
+
 
 export async function getPatients(search: string): Promise<PacienteModel[]> {
   try {
-    const { data: res } = await axiosInstance.get(`${config.HOST}/paciente`, {
-      headers: headers,
+    const token = getToken();
+
+    if (!token) {
+      console.error("Token no disponible");
+      return [];
+    }
+
+    const { data: res } = await axios.get("http://181.84.146.35:8080/paciente", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
+
     const { data } = res;
 
     const pacientes = data.filter(
@@ -24,11 +59,14 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
         p.dni.toLocaleLowerCase().includes(search.toLocaleLowerCase())
     );
 
+    console.log("Pacientes encontrados:", pacientes);
     return pacientes;
   } catch (error) {
-    return Promise.resolve([]);
+    console.error("Error al obtener pacientes:", error);
+    return [];
   }
 }
+
 
 export async function getPatient(dni: string): Promise<PacienteModel | null> {
   try {

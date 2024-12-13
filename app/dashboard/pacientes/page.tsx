@@ -1,18 +1,18 @@
 "use client";
-import { columns } from "./table/columns";
-import { DataTable } from "./table/data-table";
+import { HistoriaClinicaModel, PacienteModel } from "@/Models/dashboard/types";
+import CreateEntity from "@/app/dashboard/pacientes/create-entity";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   addPatient,
   deletePatient,
   editPatient,
   getPatients,
 } from "./functions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
-import { HistoriaClinicaModel, PacienteModel } from "@/Models/dashboard/types";
-import CreateEntity from "@/app/dashboard/pacientes/create-entity";
-import { useRouter, useSearchParams } from "next/navigation";
+import { columns } from "./table/columns";
+import { DataTable } from "./table/data-table";
 
 const historiaClinica: HistoriaClinicaModel = {
   id_historia_clinica: 0,
@@ -32,6 +32,7 @@ const createPatientData: PacienteModel | null = {
 };
 
 export default function Home() {
+  console.log("entro aquii")
   const [data, setData] = useState<PacienteModel[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [createPatient, setCreatePatient] = useState<PacienteModel | null>(
@@ -46,10 +47,12 @@ export default function Home() {
 
   const getData = async (search: string) => {
     const res = await getPatients(search);
+    console.log("entro despuis");
     setData(res);
   };
 
   useEffect(() => {
+    console.log("estuvo aqui");
     getData("");
   }, []);
 

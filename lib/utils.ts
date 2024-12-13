@@ -1,11 +1,28 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export const config = {
-  HOST:'https://backendsoft.lunahri.net.ar',
+  HOST: '181.84.146.35:8080',
   NEW_HOST: 'https://istp1service.azurewebsites.net'
 }
+
+export const storeToken = async (token: string,) => {
+  try {
+    localStorage.setItem("TOKEN", token);
+  } catch (error) {
+    console.error("Error storing tokens", error);
+  }
+};
+
+export const getToken = () => {
+  try {
+    return localStorage.getItem("TOKEN");
+  } catch (error) {
+    console.error("Error retrieving access token from localStorage", error);
+    return null;
+  }
+};
