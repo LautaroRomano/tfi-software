@@ -5,10 +5,7 @@ import axios from "axios";
 const headers = {
   "ngrok-skip-browser-warning": "true",
   "Content-Type": "application/json",
-  "strict-origin-when-cross-origin": "true",
 };
-
-
 
 const axiosInstance = axios.create({ headers: headers, withCredentials: true, });
 
@@ -42,7 +39,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
       return [];
     }
 
-    const { data: res } = await axios.get("http://181.84.146.35:8080/paciente", {
+    const { data: res } = await axiosInstance.get(`${config.HOST}/paciente`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -88,7 +85,7 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 
 export async function addPatient(paciente: PacienteModel): Promise<boolean> {
   try {
-    const { data: res } = await axios.post(`${config.HOST}/paciente`, paciente);
+    const { data: res } = await axiosInstance.post(`${config.HOST}/paciente`, paciente);
     return !!res;
   } catch (error) {
     return false;
@@ -97,7 +94,7 @@ export async function addPatient(paciente: PacienteModel): Promise<boolean> {
 
 export async function editPatient(paciente: PacienteModel): Promise<boolean> {
   try {
-    const { data: res } = await axios.put(
+    const { data: res } = await axiosInstance.put(
       `${config.HOST}/paciente/${paciente.dni}`,
       paciente
     );
@@ -109,7 +106,7 @@ export async function editPatient(paciente: PacienteModel): Promise<boolean> {
 
 export async function deletePatient(paciente: PacienteModel): Promise<boolean> {
   try {
-    const { data: res } = await axios.delete(
+    const { data: res } = await axiosInstance.delete(
       `${config.HOST}/paciente/${paciente.dni}`
     );
     return !!res;
@@ -123,7 +120,7 @@ export async function agregarDiagnostico(
   descripcion: string
 ): Promise<boolean> {
   try {
-    const { data: res } = await axios.post(
+    const { data: res } = await axiosInstance.post(
       `${config.HOST}/paciente/${dni}/diagnostico`,
       { descripcion }
     );
@@ -139,7 +136,7 @@ export async function editarDiagnostico(
   descripcion: string
 ): Promise<boolean> {
   try {
-    const { data: res } = await axios.put(
+    const { data: res } = await axiosInstance.put(
       `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`,
       { descripcion }
     );
@@ -154,7 +151,7 @@ export async function eliminarDiagnostico(
   dni: string
 ): Promise<boolean> {
   try {
-    const { data: res } = await axios.delete(
+    const { data: res } = await axiosInstance.delete(
       `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`
     );
     return !!res;
@@ -185,7 +182,7 @@ export const getAllMedications = async (
   limite: number = 10
 ) => {
   try {
-    const response = await axios.get(
+    const response = await axiosInstance.get(
       `${config.NEW_HOST}/api/servicio-salud/medicamentos/todos`,
       {
         params: { pagina, limite },

@@ -4,7 +4,11 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://istp1service.azurewebsites.net/api/:path*', // Proxy to Backend
+        destination: `${process.env.NEXT_PUBLIC_NEW_HOST ||'https://istp1service.azurewebsites.net'}/api/:path*`, // Proxy to Backend
+      },
+      {
+        source: '/:path*',
+        destination: `${process.env.NEXT_PUBLIC_HOST || 'http://localhost:8080'}/:path*`, // Proxy to ngrok
       },
     ];
   },

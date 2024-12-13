@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const config = {
-  HOST: '181.84.146.35:8080',
-  NEW_HOST: 'https://istp1service.azurewebsites.net'
+  HOST: process.env.NEXT_PUBLIC_HOST || 'http://localhost:8080',
+  NEW_HOST: process.env.NEXT_PUBLIC_NEW_HOST ||'https://istp1service.azurewebsites.net'
 }
 
 export const storeToken = async (token: string,) => {
