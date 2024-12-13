@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { PacienteModel } from "@/Models/dashboard/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export const columns: ColumnDef<PacienteModel>[] = [
   {
