@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {EvolucionModel, MedicamentModel, PedidoLaboratorioModel, RecetaDigitalModel} from "@/Models/dashboard/types";
-import {agregarEvolucion, fetchMedicamentos, searchMedication} from "@/app/dashboard/pacientes/functions";
+import {agregarEvolucion, searchMedication} from "@/app/dashboard/pacientes/functions";
 import {Label} from "@/components/ui/label";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
@@ -18,7 +18,7 @@ interface PropsType {
   isOpen: boolean;
   dni: string;
   id_diagnostico: number;
-  reload: Function;
+  reload: ()=>void;
   close: () => void;
 }
 
@@ -107,7 +107,10 @@ export default function CreateEvolucion({
       return alert('Debes agregar una descripción!');
     }
 
-    const aditionalData: any = {};
+    const aditionalData: {
+      receta?: RecetaDigitalModel,
+      pedidoLaboratorio?: PedidoLaboratorioModel,
+    } = {};
     
     switch (selectedTab) {
       case 'receta':

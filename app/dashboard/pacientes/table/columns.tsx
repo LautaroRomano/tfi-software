@@ -60,14 +60,16 @@ export const columns: ColumnDef<PacienteModel>[] = [
       <div className="text-start text-titlePrimary font-bold">Acciones</div>
     ),
     cell: ({ row }) => {
-      const router = useRouter();
       const patientDni = row.original.dni;
       return (
         <div className="flex gap-5">
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => router.replace(`/dashboard/pacientes/${patientDni}`)}
+            onClick={() => {
+              const router = useRouter();
+              router.replace(`/dashboard/pacientes/${patientDni}`)
+            }}
           >
             <Eye />
           </Button>
@@ -75,18 +77,20 @@ export const columns: ColumnDef<PacienteModel>[] = [
             disabled
             variant="ghost"
             size="icon"
-            onClick={() =>
+            onClick={() => {
+              const router = useRouter();
               router.replace(`/dashboard/pacientes?edit=${patientDni}`)
-            }
+            }}
           >
             <Edit />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            onClick={() =>
+            onClick={() => {
+              const router = useRouter();
               router.replace(`/dashboard/pacientes?delete=${patientDni}`)
-            }
+            }}
           >
             <Trash />
           </Button>

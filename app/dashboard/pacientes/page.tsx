@@ -4,7 +4,7 @@ import CreateEntity from "@/app/dashboard/pacientes/create-entity";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   addPatient,
   deletePatient,
@@ -31,8 +31,7 @@ const createPatientData: PacienteModel | null = {
   historiaClinica: historiaClinica,
 };
 
-export default function Home() {
-  console.log("entro aquii")
+function Pacientes() {
   const [data, setData] = useState<PacienteModel[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [createPatient, setCreatePatient] = useState<PacienteModel | null>(
@@ -152,4 +151,8 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export default function Home() {
+  return <Suspense fallback={<div>Loading...</div>}> <Pacientes /> </Suspense>;
 }

@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { getPlantillas, storePlantilla } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-export function SelectPlantilla({ select }: { select: Function }) {
+export function SelectPlantilla({ select }: { select: (text:string)=>void }) {
   const [plantillas, setPlantillas] = useState<{ id: string; text: string }[]>([]);
   const [indexPlantilla, setIndexPlantilla] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

@@ -9,7 +9,7 @@ interface PropsType {
   isOpen: boolean;
   dni: string;
   editDiagnostico: DiagnosticoModel | null;
-  reload: Function;
+  reload: ()=>void;
   close: () => void;
 }
 

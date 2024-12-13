@@ -36,7 +36,7 @@ export default function Navbar({ title = "" }) {
             >
               <DropdownMenuLabel className="text-gray-700 font-medium text-center">Cerrar Sesión</DropdownMenuLabel>
               <div className="flex flex-col space-y-1 mt-2">
-                <button className="text-red-500 hover:text-red-700 py-1 px-4 text-sm rounded-md transition duration-200" link>
+                <button className="text-red-500 hover:text-red-700 py-1 px-4 text-sm rounded-md transition duration-200">
                   Confirmar
                 </button>
                 <button className="text-gray-500 hover:text-gray-700 py-1 px-4 text-sm rounded-md transition duration-200">

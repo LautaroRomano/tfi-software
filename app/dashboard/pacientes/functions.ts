@@ -80,6 +80,7 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 
     return paciente;
   } catch (error) {
+    console.error("Error al obtener paciente:", error);
     return null;
   }
 }
@@ -89,6 +90,7 @@ export async function addPatient(paciente: PacienteModel): Promise<boolean> {
     const { data: res } = await axiosInstance.post(`/backend/paciente`, paciente);
     return !!res;
   } catch (error) {
+    console.error("Error al agregar paciente:", error);
     return false;
   }
 }
@@ -101,6 +103,7 @@ export async function editPatient(paciente: PacienteModel): Promise<boolean> {
     );
     return !!res;
   } catch (error) {
+    console.error("Error al editar paciente:", error);
     return false;
   }
 }
@@ -112,6 +115,7 @@ export async function deletePatient(paciente: PacienteModel): Promise<boolean> {
     );
     return !!res;
   } catch (error) {
+    console.error("Error al eliminar paciente:", error);
     return false;
   }
 }
@@ -127,6 +131,7 @@ export async function agregarDiagnostico(
     );
     return !!res;
   } catch (error) {
+    console.error("Error al agregar diagnostico:", error);
     return false;
   }
 }
@@ -143,6 +148,7 @@ export async function editarDiagnostico(
     );
     return !!res;
   } catch (error) {
+    console.error("Error al editar diagnostico:", error);
     return false;
   }
 }
@@ -157,6 +163,7 @@ export async function eliminarDiagnostico(
     );
     return !!res;
   } catch (error) {
+    console.error("Error al eliminar diagnostico:", error);
     return false;
   }
 }
@@ -164,9 +171,8 @@ export async function eliminarDiagnostico(
 export async function agregarEvolucion(
   dni: string,
   id_diagnostico: number,
-  informe: any
+  informe: any // eslint-disable-line
 ): Promise<boolean> {
-  console.log("🚀 ~ informe:", informe)
   try {
     const { data: res } = await axiosInstance.post(
       `/backend/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
@@ -174,6 +180,7 @@ export async function agregarEvolucion(
     );
     return !!res;
   } catch (error) {
+    console.error("Error al agregar evolucion:", error);
     return false;
   }
 }
@@ -193,16 +200,6 @@ export const getAllMedications = async (
   } catch (error) {
     console.error("Error al obtener los medicamentos:", error);
     return [];
-  }
-};
-
-export const fetchMedicamentos = async (desc: string, callback: Function) => {
-  try {
-    const response = await axiosInstance.get(
-      `${config.NEW_HOST}/api/servicio-salud/medicamentos?descripcion=${desc}`
-    );
-    callback(response.data);
-  } catch (error) {
   }
 };
 

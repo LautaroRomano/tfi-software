@@ -7,7 +7,6 @@ import { ArrowLeft } from "lucide-react";
 import CreateDiagnostico from "./create-diagnostico";
 import CreateEvolucion from "./create-evolucion";
 import { Pencil, Trash2, Eye } from "lucide-react";
-import { set } from "date-fns";
 
 export default function PatientPage({ patientDni }: { patientDni: string }) {
   const [data, setData] = useState<PacienteModel | null>(null);
@@ -101,8 +100,9 @@ export default function PatientPage({ patientDni }: { patientDni: string }) {
         </div>
         <div className="space-y-4">
           {data.historiaClinica.diagnosticos.map((diagnostico, index) => (
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center" key={index}>
               <button
+                key={index}
                 className="bg-gray-100 p-4 rounded-lg flex justify-between items-center w-full hover:bg-gray-200"
                 onClick={() => setViewDiagnostico(diagnostico)}
               >
@@ -150,8 +150,8 @@ function ViewDiagnostico({
 }: {
   patientDni: string;
   diagnostico: DiagnosticoModel;
-  onClose: Function;
-  reload: Function;
+  onClose: ()=>void;
+  reload: ()=>void;
 }) {
   const [newEvolucion, setNewEvolucion] = useState(false);
   return (
@@ -190,7 +190,7 @@ function ViewDiagnostico({
         </div>
         <div className="space-y-4">
           {diagnostico.evoluciones.map((evolucion, index) => (
-            <button className="bg-gray-100 p-4 rounded-lg flex justify-between items-center w-full hover:bg-gray-200">
+            <button key={index} className="bg-gray-100 p-4 rounded-lg flex justify-between items-center w-full hover:bg-gray-200">
               <div
                 key={index}
                 className="flex justify-between items-center flex-col w-full gap-4"
@@ -214,8 +214,7 @@ function ViewDiagnostico({
                   </p> */}
                   <p className="">
                     {
-                      //@ts-ignore
-                      evolucion.doctor
+                      evolucion.medico?.apellido + " " + evolucion.medico?.nombre
                     }
                   </p>
                 </div>

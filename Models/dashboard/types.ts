@@ -57,3 +57,14 @@ export interface MedicoModel extends PersonaModel {
   matricula: string;
   especialidad: string;
 }
+
+export interface User {
+  id?: string;
+  name: string;
+  email: string;
+  phone: string;
+  cuil: string;
+  birthDay: string;
+  role: string;
+  password: string;
+}
