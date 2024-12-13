@@ -40,3 +40,37 @@ export const getUserLoggued = () => {
     return null;
   }
 };
+
+export const storePlantilla = async (platillas: any) => {
+  try {
+    localStorage.setItem("PLANTILLAS", JSON.stringify(platillas));
+    return getPlantillas();
+  } catch (error) {
+    console.error("Error storing PLANTILLAS", error);
+  }
+};
+
+export const getPlantillas = () => {
+  try {
+    const data = localStorage.getItem("PLANTILLAS");
+    if (data) {
+      return JSON.parse(data);
+    } else {
+      const examplePlantillas = [
+        { 
+          id: '1', 
+          text: 'Fecha: 13/12/2024\nPaciente: Juan Pérez\nSolicito: Hemograma completo con recuento diferencial, velocidad de sedimentación globular y proteína C reactiva. Indicado para evaluar posibles procesos infecciosos o inflamatorios.' 
+        },
+        { 
+          id: '2', 
+          text: 'Fecha: 13/12/2024\nPaciente: María González\nSolicito: Perfil lipídico que incluya colesterol total, HDL, LDL y triglicéridos. También se requiere glucosa en ayunas y hemoglobina glucosilada para control metabólico.' 
+        },
+      ];      
+      localStorage.setItem("PLANTILLAS", JSON.stringify(examplePlantillas));
+      return examplePlantillas;
+    }
+  } catch (error) {
+    console.error("Error retrieving access token from localStorage", error);
+    return null;
+  }
+};

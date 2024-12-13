@@ -11,6 +11,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import { Textarea } from '@/components/ui/textarea';
+import { SelectPlantilla } from './select-plantilla';
 
 interface PropsType {
   isOpen: boolean;
@@ -277,14 +279,19 @@ export default function CreateEvolucion({
                       <Label htmlFor="nombre" className="font-semibold text-md">
                         Pedido de laboratorio
                       </Label>
-                      <Input
-                          className="bg-gray-200"
+                      <div className="flex flex-col gap-2">
+                        <Textarea
+                          className="bg-gray-200 h-52"
                           id="descripcion"
                           name="descripcion"
                           value={pedidoLaboratorio?.descripcion || ''}
                           onChange={({ target }) => setPedidoLaboratorio({descripcion: target.value})}
                           placeholder="Ingrese una descripción"
-                      />
+                        />
+                        <div className="flex w-full justify-end">
+                        <SelectPlantilla select={(descripcion:string) => setPedidoLaboratorio({descripcion})}/>
+                        </div>
+                      </div>
                     </div>
                   </div>
               </TabsContent>
