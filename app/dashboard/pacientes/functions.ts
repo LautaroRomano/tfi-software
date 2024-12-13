@@ -41,11 +41,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
       return [];
     }
 
-    const { data: res } = await axiosInstance.get(`/paciente`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const { data: res } = await axiosInstance.get(`/paciente`);
 
     const { data } = res;
 
@@ -68,9 +64,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
 
 export async function getPatient(dni: string): Promise<PacienteModel | null> {
   try {
-    const { data: res } = await axiosInstance.get(`/paciente`, {
-      headers: headers,
-    });
+    const { data: res } = await axiosInstance.get(`/paciente`);
 
     const { data } = res;
 
