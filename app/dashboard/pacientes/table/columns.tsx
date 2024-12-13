@@ -67,8 +67,7 @@ export const columns: ColumnDef<PacienteModel>[] = [
             variant="ghost"
             size="icon"
             onClick={() => {
-              const router = useRouter();
-              router.replace(`/dashboard/pacientes/${patientDni}`)
+                window.location.href = `/dashboard/pacientes/${patientDni}`;
             }}
           >
             <Eye />
@@ -78,8 +77,7 @@ export const columns: ColumnDef<PacienteModel>[] = [
             variant="ghost"
             size="icon"
             onClick={() => {
-              const router = useRouter();
-              router.replace(`/dashboard/pacientes?edit=${patientDni}`)
+              window.location.href = `/dashboard/pacientes?edit=${patientDni}`
             }}
           >
             <Edit />
@@ -88,8 +86,7 @@ export const columns: ColumnDef<PacienteModel>[] = [
             variant="ghost"
             size="icon"
             onClick={() => {
-              const router = useRouter();
-              router.replace(`/dashboard/pacientes?delete=${patientDni}`)
+              window.location.href = `/dashboard/pacientes?delete=${patientDni}`
             }}
           >
             <Trash />

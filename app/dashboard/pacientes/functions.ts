@@ -1,36 +1,36 @@
-import { config, getToken } from "@/lib/utils";
+import { getToken } from "@/lib/utils";
 import { PacienteModel } from "@/Models/dashboard/types";
 import axios from "axios";
 
-const token = getToken();
 const headers = {
   "ngrok-skip-browser-warning": "true",
   "Content-Type": "application/json",
-  Authorization: `Bearer ${token}`,
 };
 
-const axiosInstance = axios.create({ headers: headers,baseURL: `${config.HOST}` });
+const axiosInstance = axios.create({ headers: headers, baseURL: `/backend` });
 
 export const authenticUser = async (email: string, password: string) => {
   try {
-    const {data:response} = await axiosInstance.post(`/auth/login`, {
+    const { data: response } = await axiosInstance.post(`/auth/login`, {
       email: email,
       password: password,
     });
 
-    return {...response.data, success:true};
+    return { ...response.data, success: true };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       // Return the status code if it's an Axios error and response exists
-      return { status: error.response.status, message: error.response.data,success:false };
+      return {
+        status: error.response.status,
+        message: error.response.data,
+        success: false,
+      };
     } else {
       console.error("Unexpected error during authentication:", error);
-      return { status: 500, message: "Internal Server Error",success:false };
+      return { status: 500, message: "Internal Server Error", success: false };
     }
   }
-}
-
-
+};
 
 export async function getPatients(search: string): Promise<PacienteModel[]> {
   try {
@@ -44,6 +44,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
     const { data: res } = await axiosInstance.get(`/paciente`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -65,11 +66,20 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
   }
 }
 
-
 export async function getPatient(dni: string): Promise<PacienteModel | null> {
   try {
+    const token = getToken();
+
+    if (!token) {
+      console.error("Token no disponible");
+      return null;
+    }
+
     const { data: res } = await axiosInstance.get(`/paciente`, {
-      headers: headers,
+      headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      },
     });
 
     const { data } = res;
@@ -86,8 +96,19 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 }
 
 export async function addPatient(paciente: PacienteModel): Promise<boolean> {
+  const token = getToken();
+
+  if (!token) {
+    console.error("Token no disponible");
+    return false;
+  }
   try {
-    const { data: res } = await axiosInstance.post(`/paciente`, paciente);
+    const { data: res } = await axiosInstance.post(`/paciente`, paciente, {
+      headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      },
+    });
     return !!res;
   } catch (error) {
     console.error("Error al agregar paciente:", error);
@@ -97,9 +118,22 @@ export async function addPatient(paciente: PacienteModel): Promise<boolean> {
 
 export async function editPatient(paciente: PacienteModel): Promise<boolean> {
   try {
+    const token = getToken();
+
+    if (!token) {
+      console.error("Token no disponible");
+      return false;
+    }
+
     const { data: res } = await axiosInstance.put(
       `/paciente/${paciente.dni}`,
-      paciente
+      paciente,
+      {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      }
     );
     return !!res;
   } catch (error) {
@@ -109,9 +143,22 @@ export async function editPatient(paciente: PacienteModel): Promise<boolean> {
 }
 
 export async function deletePatient(paciente: PacienteModel): Promise<boolean> {
+  const token = getToken();
+
+  if (!token) {
+    console.error("Token no disponible");
+    return false;
+  }
+
   try {
     const { data: res } = await axiosInstance.delete(
-      `/paciente/${paciente.dni}`
+      `/paciente/${paciente.dni}`,
+      {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      }
     );
     return !!res;
   } catch (error) {
@@ -124,10 +171,23 @@ export async function agregarDiagnostico(
   dni: string,
   descripcion: string
 ): Promise<boolean> {
+  const token = getToken();
+
+  if (!token) {
+    console.error("Token no disponible");
+    return false;
+  }
+
   try {
     const { data: res } = await axiosInstance.post(
       `/paciente/${dni}/diagnostico`,
-      { descripcion }
+      { descripcion },
+      {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      }
     );
     return !!res;
   } catch (error) {
@@ -141,10 +201,23 @@ export async function editarDiagnostico(
   dni: string,
   descripcion: string
 ): Promise<boolean> {
+  const token = getToken();
+
+  if (!token) {
+    console.error("Token no disponible");
+    return false;
+  }
+
   try {
     const { data: res } = await axiosInstance.put(
       `/paciente/${dni}/diagnostico/${id_diagnostico}`,
-      { descripcion }
+      { descripcion },
+      {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      }
     );
     return !!res;
   } catch (error) {
@@ -157,9 +230,22 @@ export async function eliminarDiagnostico(
   id_diagnostico: number,
   dni: string
 ): Promise<boolean> {
+  const token = getToken();
+
+  if (!token) {
+    console.error("Token no disponible");
+    return false;
+  }
+
   try {
     const { data: res } = await axiosInstance.delete(
-      `/paciente/${dni}/diagnostico/${id_diagnostico}`
+      `/paciente/${dni}/diagnostico/${id_diagnostico}`,
+      {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      }
     );
     return !!res;
   } catch (error) {
@@ -174,9 +260,22 @@ export async function agregarEvolucion(
   informe: any // eslint-disable-line
 ): Promise<boolean> {
   try {
+    const token = getToken();
+
+    if (!token) {
+      console.error("Token no disponible");
+      return false;
+    }
+
     const { data: res } = await axiosInstance.post(
       `/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
-      informe
+      informe,
+      {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      }
     );
     return !!res;
   } catch (error) {
@@ -190,8 +289,15 @@ export const getAllMedications = async (
   limite: number = 10
 ) => {
   try {
+    const token = getToken();
+
+    if (!token) {
+      console.error("Token no disponible");
+      return false;
+    }
+
     const response = await axiosInstance.get(
-      `${config.NEW_HOST}/api/servicio-salud/medicamentos/todos`,
+      `/api/servicio-salud/medicamentos/todos`,
       {
         params: { pagina, limite },
       }
@@ -204,9 +310,16 @@ export const getAllMedications = async (
 };
 
 export const searchMedication = async (query: string) => {
+  const token = getToken();
+
+  if (!token) {
+    console.error("Token no disponible");
+    return false;
+  }
+
   try {
     const response = await axios.get(
-      `${config.NEW_HOST}/api/servicio-salud/medicamentos`,
+      `/api/servicio-salud/medicamentos`,
       {
         params: { descripcion: query },
       }
