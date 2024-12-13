@@ -11,7 +11,7 @@ const axiosInstance = axios.create({ headers: headers, withCredentials: true, })
 
 export const authenticUser = async (email: string, password: string) => {
   try {
-    const response = await axiosInstance.post(`${config.HOST}/auth/login`, {
+    const response = await axiosInstance.post(`/auth/login`, {
       email: email,
       password: password,
     });
@@ -39,7 +39,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
       return [];
     }
 
-    const { data: res } = await axiosInstance.get(`${config.HOST}/paciente`, {
+    const { data: res } = await axiosInstance.get(`/paciente`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ export async function getPatients(search: string): Promise<PacienteModel[]> {
 
 export async function getPatient(dni: string): Promise<PacienteModel | null> {
   try {
-    const { data: res } = await axiosInstance.get(`${config.HOST}/paciente`, {
+    const { data: res } = await axiosInstance.get(`/paciente`, {
       headers: headers,
     });
 
@@ -85,7 +85,7 @@ export async function getPatient(dni: string): Promise<PacienteModel | null> {
 
 export async function addPatient(paciente: PacienteModel): Promise<boolean> {
   try {
-    const { data: res } = await axiosInstance.post(`${config.HOST}/paciente`, paciente);
+    const { data: res } = await axiosInstance.post(`/paciente`, paciente);
     return !!res;
   } catch (error) {
     return false;
@@ -95,7 +95,7 @@ export async function addPatient(paciente: PacienteModel): Promise<boolean> {
 export async function editPatient(paciente: PacienteModel): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.put(
-      `${config.HOST}/paciente/${paciente.dni}`,
+      `/paciente/${paciente.dni}`,
       paciente
     );
     return !!res;
@@ -107,7 +107,7 @@ export async function editPatient(paciente: PacienteModel): Promise<boolean> {
 export async function deletePatient(paciente: PacienteModel): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.delete(
-      `${config.HOST}/paciente/${paciente.dni}`
+      `/paciente/${paciente.dni}`
     );
     return !!res;
   } catch (error) {
@@ -121,7 +121,7 @@ export async function agregarDiagnostico(
 ): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.post(
-      `${config.HOST}/paciente/${dni}/diagnostico`,
+      `/paciente/${dni}/diagnostico`,
       { descripcion }
     );
     return !!res;
@@ -137,7 +137,7 @@ export async function editarDiagnostico(
 ): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.put(
-      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`,
+      `/paciente/${dni}/diagnostico/${id_diagnostico}`,
       { descripcion }
     );
     return !!res;
@@ -152,7 +152,7 @@ export async function eliminarDiagnostico(
 ): Promise<boolean> {
   try {
     const { data: res } = await axiosInstance.delete(
-      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}`
+      `/paciente/${dni}/diagnostico/${id_diagnostico}`
     );
     return !!res;
   } catch (error) {
@@ -168,7 +168,7 @@ export async function agregarEvolucion(
   console.log("🚀 ~ informe:", informe)
   try {
     const { data: res } = await axiosInstance.post(
-      `${config.HOST}/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
+      `/paciente/${dni}/diagnostico/${id_diagnostico}/evolucion`,
       informe
     );
     return !!res;
