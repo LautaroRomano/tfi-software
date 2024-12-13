@@ -1,15 +1,24 @@
-import {Button} from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator"
-import {HealthcareMember} from "@/Models/HealthcareMember/HealthcareMember";
+'use client'
+import {
+    Dialog
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { HealthcareMember } from "@/Models/HealthcareMember/HealthcareMember";
 import Image from "next/image";
-
-
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 
 
 
 export default function Home() {
+    const router = useRouter();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     const healthCareMembers: HealthcareMember[] = [{
         icon: '/assets/icons/users.png', // Ruta de la imagen
@@ -37,6 +46,8 @@ export default function Home() {
                     />
                     <h1 className={'px-2 font-bold text-4xl'}>Medical Clinic</h1>
                 </div>
+
+                <Dialog router={router} />
             </header>
 
             <main className="flex flex-col  h-screen p-12 justify-around">
@@ -69,12 +80,11 @@ export default function Home() {
                             </div>
                             <p className="text-center pt-4">{item.description}</p>
                             {index === 0 && (
-                                <Separator orientation={'vertical'}/>
+                                <Separator orientation={'vertical'} />
                             )}
                         </div>
                     ))}
                 </div>
-
 
             </main>
 

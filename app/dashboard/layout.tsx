@@ -1,8 +1,10 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import Navbar from "@/components/dashboard/navbar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -10,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="fixed top-0  z-50">
           <SidebarTrigger />
         </div>
-        <Navbar />
+        < Navbar />
         <section className="w-full h-full p-0 bg-[#f5f7fa]">
           {children}
         </section>
@@ -18,3 +20,4 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </SidebarProvider>
   );
 }
+ 
