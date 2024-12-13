@@ -189,7 +189,9 @@ function ViewDiagnostico({
           <Button onClick={() => setNewEvolucion(true)}>Nueva evolucion</Button>
         </div>
         <div className="space-y-4">
-          {diagnostico.evoluciones.map((evolucion, index) => (
+          {diagnostico.evoluciones.map((evolucion, index) => {
+            console.log(evolucion)
+            return (
             <button key={index} className="bg-gray-100 p-4 rounded-lg flex justify-between items-center w-full hover:bg-gray-200">
               <div
                 key={index}
@@ -209,12 +211,9 @@ function ViewDiagnostico({
                 </div>
                 <div className="flex gap-4 w-full">
                   <p className="font-semibold">Nombre del Medico:</p>
-                  {/* <p className="">
-                    {evolucion.medico.apellido + " " + evolucion.medico.nombre}
-                  </p> */}
                   <p className="">
                     {
-                      evolucion.medico?.apellido + " " + evolucion.medico?.nombre
+                      evolucion?.doctor || "Juan Perez"
                     }
                   </p>
                 </div>
@@ -263,7 +262,7 @@ function ViewDiagnostico({
 
               </div>
             </button>
-          ))}
+          )})}
         </div>
       </div>
     </div>

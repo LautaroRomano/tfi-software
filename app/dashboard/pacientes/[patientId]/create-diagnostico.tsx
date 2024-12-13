@@ -4,12 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import { agregarDiagnostico, editarDiagnostico } from "../functions";
+import { SelectDiagnostico } from "./select-diagnostico";
 
 interface PropsType {
   isOpen: boolean;
   dni: string;
   editDiagnostico: DiagnosticoModel | null;
-  reload: ()=>void;
+  reload: () => void;
   close: () => void;
 }
 
@@ -62,21 +63,26 @@ export default function CreateDiagnostico({
             ? "Crear Nuevo Diagnostico"
             : "Editar Diagnostico"}
         </h2>
-        <div className="grid grid-cols-2 gap-8 m-2">
-          <div className="">
+        <div className="grid grid-cols-1 gap-8 m-2">
+          <div className="flex flex-col gap-2 w-full">
             <Label htmlFor={"nombre"} className="font-semibold text-md">
               Descripcion
             </Label>
-            <Input
-              className="bg-gray-200"
-              id={"descripcion"}
-              name="descripcion"
-              value={data?.descripcion || ""}
-              onChange={({ target }) =>
-                handleChangeData("descripcion", target.value)
-              }
-              placeholder={`Ingrese una descripcion`}
-            />
+            <div className="flex gap-2 w-[800px]">
+              <Input
+                className="bg-gray-200"
+                id={"descripcion"}
+                name="descripcion"
+                value={data?.descripcion || ""}
+                onChange={({ target }) =>
+                  handleChangeData("descripcion", target.value)
+                }
+                placeholder={`Ingrese una descripcion`}
+              />
+              <SelectDiagnostico
+                select={(text) => handleChangeData("descripcion", text)}
+              />
+            </div>
           </div>
         </div>
         <div className="flex justify-end gap-2 mt-4">

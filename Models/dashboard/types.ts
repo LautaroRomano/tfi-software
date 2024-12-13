@@ -31,6 +31,7 @@ export interface EvolucionModel {
   medico?: MedicoModel;
   receta?: RecetaDigitalModel;
   pedidoLaboratorio?: PedidoLaboratorioModel;
+  doctor?:string
 }
 
 export interface RecetaDigitalModel {
